@@ -38,11 +38,15 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
+
+# Ensure directories for volumes exist with correct permissions before switching user
+RUN mkdir -p /app/public/uploads /app/prisma/data
+RUN chown nextjs:nodejs /app/public/uploads /app/prisma/data
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
@@ -53,6 +57,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 # Copy node_modules with the generated prisma client
 COPY --from=builder /app/node_modules ./node_modules
+
+# Provide DATABASE_URL for Next.js runtime (Server Actions & Prisma queries)
+ENV DATABASE_URL="file:./data/dev.db"
 
 USER nextjs
 
