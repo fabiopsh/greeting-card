@@ -61,7 +61,7 @@ COPY --from=builder /app/node_modules ./node_modules
 # Provide DATABASE_URL for Next.js runtime (Server Actions & Prisma queries)
 ENV DATABASE_URL="file:./data/dev.db"
 
-USER nextjs
+# USER nextjs
 
 EXPOSE 3000
 

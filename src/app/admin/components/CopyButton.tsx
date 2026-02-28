@@ -9,9 +9,30 @@ export default function CopyButton({ id }: { id: string }) {
 
 	const handleCopy = async () => {
 		const url = `${window.location.origin}/card/${id}`;
-		await navigator.clipboard.writeText(url);
-		setCopied(true);
-		setTimeout(() => setCopied(false), 2000);
+		try {
+			if (navigator.clipboard && window.isSecureContext) {
+				await navigator.clipboard.writeText(url);
+			} else {
+				// Fallback for non-HTTPS environments (like local network IPs)
+				const textArea = document.createElement("textarea");
+				textArea.value = url;
+				textArea.style.position = "absolute";
+				textArea.style.opacity = "0";
+				document.body.prepend(textArea);
+				textArea.select();
+				try {
+					document.execCommand("copy");
+				} catch (err) {
+					console.error("Fallback copy failed", err);
+				} finally {
+					textArea.remove();
+				}
+			}
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		} catch (err) {
+			console.error("Failed to copy", err);
+		}
 	};
 
 	return (
