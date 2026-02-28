@@ -22,6 +22,7 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 # Generate prisma client
+ENV DATABASE_URL="file:./data/dev.db"
 RUN npx prisma generate
 
 RUN npm run build
