@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+   birthday-app:
+      build: .
+      ports:
+         - "3000:3000"
+      volumes:
+         # Salva il database SQLite fuori dal container
+         - ./prisma/data:/app/prisma/data
+         # Salva le foto caricate fuori dal container
+         - ./public/uploads:/app/public/uploads
+      restart: always
