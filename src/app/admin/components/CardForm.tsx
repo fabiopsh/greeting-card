@@ -133,18 +133,32 @@ export default function CardForm({ initialData }: { initialData?: CardData }) {
 					</div>
 
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1">Theme</label>
-						<select
-							className="flex h-14 w-full rounded-t-lg border-b-2 border-gray-400 bg-gray-100 px-4 py-2 text-sm focus-visible:outline-none focus-visible:border-primary focus-visible:bg-gray-200 transition-colors"
-							value={formData.themeId}
-							onChange={(e) => setFormData({ ...formData, themeId: e.target.value })}
-						>
+						<label className="block text-sm font-medium text-gray-700 mb-2">Select Theme</label>
+						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
 							{THEMES.map((theme) => (
-								<option key={theme} value={theme}>
-									{theme.replace("theme-", "").replace("-", " ").toUpperCase()}
-								</option>
+								<button
+									key={theme}
+									type="button"
+									onClick={() => setFormData({ ...formData, themeId: theme })}
+									className={`
+										relative h-24 rounded-xl border-2 overflow-hidden transition-all duration-300 flex flex-col items-center justify-center
+										${formData.themeId === theme ? 'border-primary ring-2 ring-primary ring-offset-2 scale-105 shadow-lg z-10' : 'border-gray-200 hover:border-gray-300 hover:scale-105 shadow-sm'}
+										${theme}
+									`}
+								>
+									{/* The theme class will apply background and fonts to the button itself */}
+									<div className="absolute inset-0 bg-white/10 dark:bg-black/10 backdrop-blur-[1px] pointer-events-none" />
+									<span className="relative z-10 font-bold text-xs sm:text-sm tracking-wide text-center px-2 drop-shadow-md">
+										{theme.replace("theme-", "").replace("-", " ").toUpperCase()}
+									</span>
+									{formData.themeId === theme && (
+										<div className="absolute top-1 right-1 bg-primary text-white rounded-full p-0.5 shadow-md z-20">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12"></polyline></svg>
+										</div>
+									)}
+								</button>
 							))}
-						</select>
+						</div>
 					</div>
 
 					<div>
