@@ -85,9 +85,9 @@ export default function ContributorItem({ contributor }: { contributor: Contribu
 
 	return (
 		<div className="p-4 bg-white border border-gray-200 rounded-xl shadow-sm flex items-start justify-between group">
-			<div>
-				<p className="font-semibold">{contributor.name}</p>
-				{contributor.dedication && <p className="text-gray-600 mt-1">{contributor.dedication}</p>}
+			<div className="min-w-0 pr-2 flex-grow">
+				<p className="font-semibold break-words">{contributor.name}</p>
+				{contributor.dedication && <p className="text-gray-600 mt-1 break-words">{contributor.dedication}</p>}
 			</div>
 			<div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
 				<Button
